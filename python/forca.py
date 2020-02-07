@@ -4,7 +4,9 @@ def jogar():
     print("*********************************")
 
     palavra = "banana".upper()
-    letras_acertadas = ["_", "_", "_", "_", "_", "_"]
+    letras_acertadas = []
+    for letra in palavra:
+        letras_acertadas.append("_")
 
     enforcou = False
     acertou = False
