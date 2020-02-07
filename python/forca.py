@@ -35,7 +35,6 @@ def jogar():
         print("Você ganhou!")
     else:
         print("Você perdeu!")
-
     print("Fim do jogo")
 
 
