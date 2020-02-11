@@ -19,11 +19,17 @@ class Programa:
     def nome(self, nome):
         self._nome = nome
 
+    def __str__(self):
+        return f'{self._nome} - {self.ano} - {self._likes} Likes'
+
 
 class Filme(Programa):
     def __init__(self, nome, ano, duracao):
         super().__init__(nome, ano)
         self.duracao = duracao
+
+    def __str__(self):
+        return f'{self._nome} - {self.ano} - {self.duracao} min. - {self._likes} Likes'
 
 
 class Serie(Programa):
@@ -31,12 +37,17 @@ class Serie(Programa):
         super().__init__(nome, ano)
         self.temporadas = temporadas
 
+    def __str__(self):
+        return f'{self._nome} - {self.ano} - {self.temporadas} temporadas - {self._likes} Likes'
+
 
 vingadores = Filme('vingadores - guerra infinita', 2018, 160)
 vingadores.dar_likes()
 vingadores.dar_likes()
-print(f'Nome: {vingadores.nome} - Ano: {vingadores.ano} - Duração: {vingadores.duracao} min. - Likes: {vingadores.likes}')
-
 atlanta = Serie('atlanta', 2018, 2)
 atlanta.dar_likes()
-print(f'Nome: {atlanta.nome} - Ano: {atlanta.ano} - Temporadas: {atlanta.temporadas} - Likes: {atlanta.likes}')
+
+listinha = [atlanta, vingadores]
+
+for programa in listinha:
+    print(programa)
