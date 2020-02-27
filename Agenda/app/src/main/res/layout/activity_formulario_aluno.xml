@@ -10,13 +10,13 @@
         android:id="@+id/activity_formulario_aluno_nome"
         android:layout_margin="8dp"
         android:inputType="textCapWords"
-        android:hint="Nome"/>
+        android:hint="@string/nome"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/activity_formulario_aluno_telefone"
         android:layout_margin="8dp"
-        android:hint="Telefone"
+        android:hint="@string/telefone"
         android:inputType="phone"/>
     <EditText
         android:layout_width="match_parent"
@@ -24,13 +24,13 @@
         android:id="@+id/activity_formulario_aluno_email"
         android:layout_margin="8dp"
         android:inputType="textEmailAddress"
-        android:hint="E-mail"/>
+        android:hint="@string/e_mail"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/activiti_formulario_aluno_botao_salvar"
         android:layout_margin="8dp"
-        android:text="Salvar"/>
+        android:text="@string/salvar"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
