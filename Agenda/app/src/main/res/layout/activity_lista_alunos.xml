@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/ic_action_novo_aluno" />
 
     <ListView
-        android:id="@+id/activity_main_lista_de_alunos"
+        android:id="@+id/activity_lista_de_alunos_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
