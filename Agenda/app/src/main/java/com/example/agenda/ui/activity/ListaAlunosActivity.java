@@ -19,7 +19,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
 
-        AlunoDAO dao = new AlunoDAO();
+
 
         setTitle("Lista de Alunos");
 
@@ -31,6 +31,13 @@ public class ListaAlunosActivity extends AppCompatActivity {
                         FormularioAlunoActivity.class));
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AlunoDAO dao = new AlunoDAO();
 
         ListView listaDeAlunos = findViewById(R.id.activity_lista_de_alunos_listview);
         listaDeAlunos.setAdapter(
