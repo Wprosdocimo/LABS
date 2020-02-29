@@ -1,13 +1,8 @@
-
-body {
-
-}
-
 #banner {
-	width: 100%
+	width:100%;
 }
 
-.principal {
+.principal{
 	background: #CCCCCC;
 	padding: 30px;
 }
@@ -45,9 +40,9 @@ ul {
 	display: inline-block;
 	vertical-align: top;
 	width: 20%;
-	margin-right: 15%
+	margin-right: 15%;
 }
 
-.imagem-beneficios {
-	width: 50%
+.imagembeneficios {
+	width: 50%;
 }
