@@ -1,7 +1,18 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
 
+from dao import JogoDao
+from flask_mysqldb import MySQL
+
 app = Flask(__name__)
 app.secret_key = 'wprosdocimo'
+
+app.config['MYSQL_HOST'] = "0.0.0.0"
+app.config['MYSQL_USER'] = "root"
+app.config['MYSQLPASSWORD'] = "nosliw"
+app.config['MYSQL_DB'] = "jogoteca"
+app.config['MYSQL_PORT'] = 33060
+db = MySQL(app)
+jogo_dao = JogoDao(db)
 
 
 class Jogo:
@@ -51,7 +62,7 @@ def criar():
     categoria = request.form['categoria']
     console = request.form['console']
     jogo = Jogo(nome, categoria, console)
-    lista.append(jogo)
+    jogo_dao.salvar(jogo)
     return redirect(url_for('index'))
 
 
