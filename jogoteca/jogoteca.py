@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, flash, url_for
-
+from models import Jogo, Usuario
 from dao import JogoDao
 from flask_mysqldb import MySQL
 
@@ -15,30 +15,13 @@ db = MySQL(app)
 jogo_dao = JogoDao(db)
 
 
-class Jogo:
-    def __init__(self, nome, categoria, console):
-        self.nome = nome
-        self.categoria = categoria
-        self.console = console
-
-
 jogo1 = Jogo('Super Mario', 'Acao', 'SNES')
 jogo2 = Jogo('Pokemon Gold', 'RPG', 'GBA')
 jogo3 = Jogo('Mortal Kombat', 'Luta', 'SNES')
 lista = [jogo1, jogo2, jogo3]
-
-
-class Usuario:
-    def __init__(self, id, nome, senha):
-        self.id = id
-        self.nome = nome
-        self.senha = senha
-
-
 usuario1 = Usuario('luan', 'Luiz Antonio Marques', '1234')
 usuario2 = Usuario('Nico', 'Nico Steppat', '7a1')
 usuario3 = Usuario('flavio', 'flavio Almeida', 'javascript')
-
 usuarios = {usuario1.id: usuario1,
             usuario2.id: usuario2,
             usuario3.id: usuario3}
