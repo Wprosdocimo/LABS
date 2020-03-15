@@ -17,7 +17,7 @@
     </ListView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/actibvity_main_fab_novo_aluno"
+        android:id="@+id/activity_main_fab_novo_aluno"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -27,5 +27,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="@drawable/ic_action_novo_aluno"
-        app:backgroundTint="#F44336" />
+        app:backgroundTint="#F44336"
+        tools:targetApi="m"
+        tools:ignore="UnusedAttribute" />
 </RelativeLayout>
