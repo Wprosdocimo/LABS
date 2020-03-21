@@ -2,6 +2,7 @@ package br.com.alura.aluraviagens.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -11,9 +12,12 @@ import java.math.BigDecimal;
 
 import br.com.alura.aluraviagens.R;
 import br.com.alura.aluraviagens.model.Pacote;
+import br.com.alura.aluraviagens.util.DataUtil;
 import br.com.alura.aluraviagens.util.DiasUtil;
 import br.com.alura.aluraviagens.util.MoedaUtil;
 import br.com.alura.aluraviagens.util.ResourcesUtil;
+
+import static br.com.alura.aluraviagens.ui.activity.PacoteActivityConstants.CHAVE_PACOTE;
 
 public class ResumoCompraActivity extends AppCompatActivity {
 
@@ -23,16 +27,23 @@ public class ResumoCompraActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resumo_compra);
-
         setTitle(TITULO_APPBAR);
+        carregaPacoteRecebido();
+    }
 
-        Pacote pacoteSaoPaulo = new Pacote("São Paulo",
-                "sao_paulo_sp", 2, new BigDecimal("243.99"));
+    private void carregaPacoteRecebido() {
+        Intent intent = getIntent();
+        if (intent.hasExtra(CHAVE_PACOTE)) {
+            final Pacote pacote = (Pacote) intent.getSerializableExtra(CHAVE_PACOTE);
+            inicializaCampos(pacote);
+        }
+    }
 
-        mostraLocal(pacoteSaoPaulo);
-        mostraImagem(pacoteSaoPaulo);
-        mostraData(pacoteSaoPaulo);
-        mostraPreco(pacoteSaoPaulo);
+    private void inicializaCampos(Pacote pacote) {
+        mostraLocal(pacote);
+        mostraImagem(pacote);
+        mostraData(pacote);
+        mostraPreco(pacote);
     }
 
     private void mostraPreco(Pacote pacote) {
@@ -43,7 +54,7 @@ public class ResumoCompraActivity extends AppCompatActivity {
 
     private void mostraData(Pacote pacote) {
         TextView data = findViewById(R.id.resumo_compra_data_viagem);
-        String periodoEmTexto = DiasUtil.formataEmTexto(pacote.getDias());
+        String periodoEmTexto = DataUtil.periodoEmTexto(pacote.getDias());
         data.setText(periodoEmTexto);
     }
 
