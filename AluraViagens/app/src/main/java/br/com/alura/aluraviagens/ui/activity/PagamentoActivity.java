@@ -2,6 +2,7 @@ package br.com.alura.aluraviagens.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -25,10 +26,12 @@ public class PagamentoActivity extends AppCompatActivity {
         Pacote pacoteSaoPaulo = new Pacote("São Paulo",
                 "sao_paulo_sp", 2, new BigDecimal("243.99"));
 
-        mostraPreço(pacoteSaoPaulo);
+        mostraPreco(pacoteSaoPaulo);
+        Intent intent = new Intent(this, ResumoCompraActivity.class);
+        startActivity(intent);
     }
 
-    private void mostraPreço(Pacote pacote) {
+    private void mostraPreco(Pacote pacote) {
         TextView preco = findViewById(R.id.pagamento_preco_pacote);
         String moedaBrasileira = MoedaUtil.formataParaBrasileiro(pacote.getPreco());
         preco.setText(moedaBrasileira);
