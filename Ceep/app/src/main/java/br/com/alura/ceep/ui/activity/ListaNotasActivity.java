@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,7 +62,7 @@ public class ListaNotasActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
                 super.onActivityResult(requestCode, resultCode, data);
         if(ehResultadoInsereNota(requestCode, data)){
             if (resultadoOK(resultCode)) {
@@ -112,7 +111,7 @@ public class ListaNotasActivity extends AppCompatActivity {
         return ehCodigoRequisicaoInsereNota(requestCode) && temNota(data);
     }
 
-    private boolean temNota(@Nullable Intent data) {
+    private boolean temNota(Intent data) {
         return data.hasExtra(CHAVE_NOTA);
     }
 
