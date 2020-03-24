@@ -14,12 +14,12 @@ import br.com.alura.ceep.R;
 import br.com.alura.ceep.model.Nota;
 
 import static br.com.alura.ceep.ui.activity.NotaActivityContantes.CHAVE_NOTA;
+import static br.com.alura.ceep.ui.activity.NotaActivityContantes.CHAVE_POSICAO;
 import static br.com.alura.ceep.ui.activity.NotaActivityContantes.CODIGO_RESULTADO_NOTA_CRIADA;
+import static br.com.alura.ceep.ui.activity.NotaActivityContantes.POSICAO_INVALIDA;
 
 public class FormularioNotaActivity extends AppCompatActivity {
 
-    public static final int POSICAO_INVALIDA = -1;
-    public static final String CHAVE_POSICAO = "posicao";
     private int posicaoRecebida = POSICAO_INVALIDA;
     private TextView titulo;
     private TextView descricao;
