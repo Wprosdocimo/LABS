@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.room.Room;
 
 import com.example.agenda.database.AgendaDatabase;
 import com.example.agenda.database.dao.RoomAlunoDAO;
