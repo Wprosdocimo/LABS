@@ -62,9 +62,22 @@ public class ListaAlunosActivity extends AppCompatActivity {
         final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         final Aluno aluno = (Aluno) listaAlunos.getItemAtPosition(info.position);
 
+        MenuItem itemSMS = menu.add("Enviar SMS");
+        Intent intentSMS = new Intent(Intent.ACTION_VIEW);
+        intentSMS.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intentSMS.setData(Uri.parse("sms:" + aluno.getTelefone()));
+        itemSMS.setIntent(intentSMS);
+
+        MenuItem itemMapa = menu.add("Visualizar no mapa");
+        Intent intentMapa = new Intent(Intent.ACTION_VIEW);
+        intentMapa.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intentMapa.setData(Uri.parse("geo:0.0?q=" + aluno.getEndereco()));
+        itemMapa.setIntent(intentMapa);
+
         MenuItem itemSite = menu.add("Visitar site");
         Intent intentSite = new Intent(Intent.ACTION_VIEW);
         intentSite.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         String site = aluno.getSite();
         if (!site.startsWith("http://")){
             site = "http://" + site;
