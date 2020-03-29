@@ -11,9 +11,9 @@ import com.example.agenda.model.Aluno;
 import java.util.List;
 
 @Dao
-public interface RoomAlunoDAO {
+public interface AlunoDAO {
     @Insert
-    void salva(Aluno aluno);
+    Long salva(Aluno aluno);
 
     @Query("SELECT * FROM aluno")
     List<Aluno> todos();
