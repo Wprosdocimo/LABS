@@ -9,6 +9,8 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
+import com.example.agenda.asynctask.buscaAlunoTask;
+import com.example.agenda.asynctask.removeAlunoTask;
 import com.example.agenda.database.AgendaDatabase;
 import com.example.agenda.database.dao.AlunoDAO;
 import com.example.agenda.model.Aluno;
@@ -17,8 +19,8 @@ import com.example.agenda.ui.adapter.ListaAlunosAdapter;
 public class ListaAlunosView {
 
     private final ListaAlunosAdapter adapter;
-    private Context context;
     private final AlunoDAO dao;
+    private Context context;
 
     public ListaAlunosView(Context context) {
         this.context = context;
@@ -45,13 +47,14 @@ public class ListaAlunosView {
     }
 
     public void atualizaAlunos() {
-        adapter.atualiza(dao.todos());
+        new buscaAlunoTask(dao, adapter).execute();
     }
 
     private void remove(Aluno aluno) {
-        dao.remove(aluno);
-        adapter.remove(aluno);
+        new removeAlunoTask(dao, adapter, aluno).execute();
+
     }
+
     public void configuraAdapter(ListView listaDeAlunos) {
 
         listaDeAlunos.setAdapter(adapter);
