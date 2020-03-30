@@ -1,7 +1,5 @@
 package com.example.agenda.asynctask;
 
-import android.os.AsyncTask;
-
 import com.example.agenda.database.dao.AlunoDAO;
 import com.example.agenda.database.dao.TelefoneDAO;
 import com.example.agenda.model.Aluno;
@@ -10,7 +8,7 @@ import com.example.agenda.model.TipoTelefone;
 
 import java.util.List;
 
-public class EditaAlunoTask extends AsyncTask<Void, Void, Void> {
+public class EditaAlunoTask extends BaseAlunoComTelefoneTask {
 
 
     private final AlunoDAO alunoDAO;
@@ -19,19 +17,17 @@ public class EditaAlunoTask extends AsyncTask<Void, Void, Void> {
     private final Telefone telefoneCelular;
     private final TelefoneDAO telefoneDAO;
     private final List<Telefone> telefonesDoAluno;
-    private final AlunoEditadoListner listner;
 
     public EditaAlunoTask(AlunoDAO alunoDAO, Aluno aluno, Telefone telefoneFixo,
-                          Telefone telefoneCelular, TelefoneDAO telefoneDAO, List<Telefone> telefonesDoAluno, AlunoEditadoListner listner) {
+                          Telefone telefoneCelular, TelefoneDAO telefoneDAO, List<Telefone> telefonesDoAluno, FinalizadaListener listener) {
+        super(listener);
         this.alunoDAO = alunoDAO;
         this.aluno = aluno;
         this.telefoneFixo = telefoneFixo;
         this.telefoneCelular = telefoneCelular;
         this.telefoneDAO = telefoneDAO;
         this.telefonesDoAluno = telefonesDoAluno;
-        this.listner = listner;
     }
-
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -52,23 +48,4 @@ public class EditaAlunoTask extends AsyncTask<Void, Void, Void> {
             }
         }
     }
-
-    private void vinculaAlunoComTelefone(int alunoId, Telefone... telefones) {
-        for (Telefone telefone :
-                telefones) {
-            telefone.setAlunoId(alunoId);
-        }
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        listner.quandoEditado();
-    }
-
-    public interface AlunoEditadoListner {
-        void quandoEditado();
-    }
-
-
 }
