@@ -11,5 +11,4 @@ public class SalvaProdutoDialog extends FormularioProdutoDialog {
                               ConfirmacaoListener listener) {
         super(context, TITULO, TITULO_BOTAO_POSITIVO, listener);
     }
-
 }
