@@ -4,7 +4,6 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.jar.Manifest;
 
 import br.com.alura.leilao.builder.LeilaoBuilder;
 import br.com.alura.leilao.exceptions.LanceMenorQueUltimoLanceException;
@@ -77,7 +76,7 @@ public class LeilaoTest {
         CONSOLE.propoe(new Lance(new Usuario("Fran"), 300.0));
         CONSOLE.propoe(new Lance(ALEX, 400.0));
 
-        List<Lance> tresMaioresLancesDevolvidos = CONSOLE.treMaioresLances();
+        List<Lance> tresMaioresLancesDevolvidos = CONSOLE.tresMaioresLances();
 
 //        assertEquals(3, tresMaioresLancesDevolvidos.size());
 //        assertThat(tresMaioresLancesDevolvidos, hasSize(equalTo(3)));
@@ -103,7 +102,7 @@ public class LeilaoTest {
 
     @Test
     public void deve_DevolverTresMaioresLances_QuandoNaoRecebeLances() {
-        List<Lance> tresMaioresLancesDevolvidos = CONSOLE.treMaioresLances();
+        List<Lance> tresMaioresLancesDevolvidos = CONSOLE.tresMaioresLances();
 
         assertEquals(0, tresMaioresLancesDevolvidos.size());
     }
@@ -111,7 +110,7 @@ public class LeilaoTest {
     @Test
     public void deve_DevolverTresMaioresLances_QuandoRecebeApenasUmLance() {
         CONSOLE.propoe(new Lance(ALEX, 200.0));
-        List<Lance> tresMaioresLancesDevolvidos = CONSOLE.treMaioresLances();
+        List<Lance> tresMaioresLancesDevolvidos = CONSOLE.tresMaioresLances();
 
         assertEquals(1, tresMaioresLancesDevolvidos.size());
         assertEquals(200.0, tresMaioresLancesDevolvidos.get(0).getValor(), DELTA);
@@ -121,7 +120,7 @@ public class LeilaoTest {
     public void deve_DevolverTresMaioresLances_QuandoRecebeApenasDoisLances() {
         CONSOLE.propoe(new Lance(ALEX, 200.0));
         CONSOLE.propoe(new Lance(new Usuario("Fran"), 300.0));
-        List<Lance> tresMaioresLancesDevolvidos = CONSOLE.treMaioresLances();
+        List<Lance> tresMaioresLancesDevolvidos = CONSOLE.tresMaioresLances();
 
         assertEquals(2, tresMaioresLancesDevolvidos.size());
         assertEquals(300.0, tresMaioresLancesDevolvidos.get(0).getValor(), DELTA);
@@ -135,7 +134,7 @@ public class LeilaoTest {
         CONSOLE.propoe(new Lance(FRAN, 300.0));
         CONSOLE.propoe(new Lance(ALEX, 400.0));
         CONSOLE.propoe(new Lance(FRAN, 500.0));
-        List<Lance> tresMaioresLancesDevolvidosPara4Lances = CONSOLE.treMaioresLances();
+        List<Lance> tresMaioresLancesDevolvidosPara4Lances = CONSOLE.tresMaioresLances();
 
         assertEquals(3, tresMaioresLancesDevolvidosPara4Lances.size());
         assertEquals(500.0, tresMaioresLancesDevolvidosPara4Lances.get(0).getValor(), DELTA);
@@ -143,7 +142,7 @@ public class LeilaoTest {
         assertEquals(300.0, tresMaioresLancesDevolvidosPara4Lances.get(2).getValor(), DELTA);
 
         CONSOLE.propoe(new Lance(ALEX, 700.0));
-        List<Lance> tresMaioresLancesDevolvidosPara5Lances = CONSOLE.treMaioresLances();
+        List<Lance> tresMaioresLancesDevolvidosPara5Lances = CONSOLE.tresMaioresLances();
 
         assertEquals(3, tresMaioresLancesDevolvidosPara5Lances.size());
         assertEquals(700.0, tresMaioresLancesDevolvidosPara5Lances.get(0).getValor(), DELTA);
