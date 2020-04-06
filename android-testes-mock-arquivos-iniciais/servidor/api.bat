@@ -1,0 +1,1 @@
+docker run -it --rm -p 8080:8080 -v C:\Users\WLP\Projetos\LABS\android-testes-mock-arquivos-iniciais\servidor:/home:Z java:8 /bin/bash -c "cd /home ; /usr/bin/java -jar /home/server.jar"
