@@ -11,12 +11,15 @@ import org.hamcrest.Matcher;
 import br.com.alura.leilao.R;
 import br.com.alura.leilao.formatter.FormatadorDeMoeda;
 
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+
 public class ViewMatcher {
     public static Matcher<? super View> apareceLeilaoNaPosicao(final int posicao,
                                                                final String descricaoEsperada,
                                                                final double maiorLanceEsperado) {
 
         return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
+            private Matcher<View> displayed = isDisplayed();
             final FormatadorDeMoeda formatador = new FormatadorDeMoeda();
             private final String maiorLanceEsperadoFormatado = formatador.formata(maiorLanceEsperado);
 
@@ -24,7 +27,8 @@ public class ViewMatcher {
             public void describeTo(Description description) {
                 description.appendText("View com descrição ").appendValue(descricaoEsperada)
                         .appendText(", maior lance ").appendValue(maiorLanceEsperadoFormatado)
-                        .appendText(", na posição ").appendValue(posicao);
+                        .appendText(", na posição ").appendValue(posicao).appendText(" ");
+                description.appendDescriptionOf(displayed);
             }
 
             @Override
@@ -36,7 +40,10 @@ public class ViewMatcher {
                 View viewDoViewHolder = viewHolderDevolvido.itemView;
                 final boolean temDescricaoEsperada = verificaDescricaoEsperada(viewDoViewHolder);
                 final boolean temMaiorLanceEsperado = verificaMaiorLanceEsperado(viewDoViewHolder);
-                return temDescricaoEsperada && temMaiorLanceEsperado;
+                displayed = isDisplayed();
+                return temDescricaoEsperada &&
+                        temMaiorLanceEsperado &&
+                        displayed.matches(viewDoViewHolder);
             }
 
             private boolean verificaMaiorLanceEsperado(View viewDoViewHolder) {
