@@ -1,0 +1,1 @@
+docker run -it --rm -p 8081:8081 -v C:\Users\WLP\Projetos\LABS\android-testes-mock-arquivos-iniciais\servidor:/home:Z java:8 /bin/bash -c "cd /home ; /usr/bin/java -jar -Dspring.profiles.active=teste /home/server.jar"
