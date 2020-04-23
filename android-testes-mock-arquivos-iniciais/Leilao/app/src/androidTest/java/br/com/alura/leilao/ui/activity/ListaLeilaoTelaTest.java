@@ -1,14 +1,8 @@
 package br.com.alura.leilao.ui.activity;
 
 import android.content.Intent;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.test.rule.ActivityTestRule;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.TextView;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,6 +21,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static br.com.alura.leilao.matchers.ViewMatcher.apareceLeilaoNaPosicao;
 import static org.hamcrest.core.AllOf.allOf;
 
 public class ListaLeilaoTelaTest {
@@ -68,8 +63,6 @@ public class ListaLeilaoTelaTest {
         tentaSalvarLeilaoNaAPI(new Leilao("Carro"), new Leilao("Computador"));
 
         activity.launchActivity(new Intent());
-
-
 //        onView(allOf(
 //                withText("Carro"),
 //                withId(R.id.item_leilao_descricao)))
@@ -92,34 +85,14 @@ public class ListaLeilaoTelaTest {
 //                withText(formatoEsperadoComputador),
 //                withId(R.id.item_leilao_maior_lance)))
 //                .check(matches(isDisplayed()));
-
         onView(withId(R.id.lista_leilao_recyclerview))
-                .check(matches(apareceLeilao(0,"Carro", 0.00)));
+                .check(matches(apareceLeilaoNaPosicao(0,"Carro", 0.00)));
         onView(withId(R.id.lista_leilao_recyclerview))
-                .check(matches(apareceLeilao(1,"Computador", 0.00)));
+                .check(matches(apareceLeilaoNaPosicao(1,"Computador", 0.00)));
 
     }
 
-    private Matcher<? super View> apareceLeilao(final int posicao, final String descricaoEsperada, final double maiorLanceEsperado) {
-        return new BoundedMatcher<View, RecyclerView>(RecyclerView.class) {
-            @Override
-            public void describeTo(Description description) {
 
-            }
-
-            @Override
-            protected boolean matchesSafely(RecyclerView item) {
-                View viewDoViewHolder = item.findViewHolderForAdapterPosition(posicao).itemView;
-                TextView textViewDescricao = viewDoViewHolder.findViewById(R.id.item_leilao_descricao);
-                final boolean temDescricaoEsperada = textViewDescricao.getText()
-                        .toString().equals(descricaoEsperada);
-                final TextView textViewMaiorLance = viewDoViewHolder.findViewById(R.id.item_leilao_maior_lance);
-                final FormatadorDeMoeda formatador = new FormatadorDeMoeda();
-                final boolean temMaiorLanceEsperado = textViewMaiorLance.getText().toString().equals(formatador.formata(maiorLanceEsperado));
-                return temDescricaoEsperada && temMaiorLanceEsperado;
-            }
-        };
-    }
 
     private void tentaSalvarLeilaoNaAPI(Leilao... leiloes) throws IOException {
         for (Leilao leilao :
