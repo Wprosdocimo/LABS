@@ -1,45 +1,29 @@
-class FilaPrioritaria:
-    codigo = 0
-    fila = []
-    clientes_atendidos = []
-    senha_atual = None
+from typing import Dict, Union, List
 
-    def gera_senha_atual(self) -> None:
-        self.senha_atual = f'PR{self.codigo}'
+from fila_base import FilaBase
+from constantes import CODIGO_PRIORITARIO
 
-    def reseta_fila(self) -> None:
-        if self.codigo >= 100:
-            self.codigo = 0
-        else:
-            self.codigo += 1
+class FilaPrioritaria(FilaBase):
 
-    def chama_cliente(self, caixa: int) -> None:
-        display = []
+    def gera_senha_atual(self):
+        self.senha_atual = f'{CODIGO_PRIORITARIO}{self.codigo}'
+
+    def chama_cliente(self, caixa: int) -> str:
         cliente_atual = self.fila.pop(0)
-        display.append(f'Cliente: ]{cliente_atual} - Caixa {caixa}')
-
-        if len(self.fila) >= 3:
-            display.append(f'Próximo: {self.fila[0]}')
-            display.append(f'Fique atento: {self.fila[1]}')
-
+        display = f'Cliente: {cliente_atual} - Caixa {caixa}'
         self.clientes_atendidos.append(cliente_atual)
-
         return display
 
-    def atualiza_fila(self) -> None:
-        self.reseta_fila()
-        self.gera_senha_atual()
-        self.fila.append(self.senha_atual)
-        
-    def estatistica(self, dia: str, agencia: str, flag:str)-> dict:
+    def estatistica(self, dia: str, agencia: str, flag: str) -> dict:
+        estatistica: Dict[str, Union[List[str], str, int]] = {}
         if flag != 'detail':
-            estatistica = {f'{agencia} - {dia}': len(self.clientes_atendidos)}
+            estatistica[f'{agencia} - {dia}'] = len(self.clientes_atendidos)
         else:
-            estatistica = {}
             estatistica['dia'] = dia
             estatistica['agencia'] = agencia
             estatistica['clientes atendidos'] = self.clientes_atendidos
-            estatistica['quantidade de clientes atendidos'] = len(self.clientes_atendidos)
-            
+            estatistica['quantidade de clientes atendidos'] = (
+                len(self.clientes_atendidos)
+            )
+
         return estatistica
-        
