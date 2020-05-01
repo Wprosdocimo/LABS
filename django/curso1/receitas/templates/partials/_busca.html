@@ -1,0 +1,17 @@
+{% load static %}
+<!-- Search Wrapper -->
+<div class="search-wrapper">
+    <!-- Close Btn -->
+    <div class="close-btn"><i aria-hidden="true" class="fa fa-times"></i></div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="{% url 'buscar' %}">
+                    <input name="buscar" placeholder="O que está procurando..." type="text">
+                    <button type="submit"><i aria-hidden="true" class="fa fa-search"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
