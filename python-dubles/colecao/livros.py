@@ -157,3 +157,16 @@ def baixar_livros(arquivo, autor=None, titulo=None, livre=None):
         if consulta.pagina == total_de_paginas:
             break
         i += 1
+
+
+def ler_arquivo(nome):
+    return ""
+
+
+def registrar_livros(arquivos, inserir_registros):
+    qtd = 0
+    for arq in arquivos:
+        conteudo = ler_arquivo(arq)
+        resposta = Resposta(conteudo)
+        qtd += inserir_registros(resposta.documentos)
+    return qtd
