@@ -11,6 +11,8 @@ import br.com.alura.financask.extension.formataParaBrasileiro
 import br.com.alura.financask.model.Tipo
 import br.com.alura.financask.model.Transacao
 import kotlinx.android.synthetic.main.transacao_item.view.*
+import java.text.DecimalFormat
+import java.util.*
 
 class ListaTansacoesAdapter(
     transacoes: List<Transacao>,
@@ -39,7 +41,10 @@ class ListaTansacoesAdapter(
                 .setBackgroundResource(R.drawable.icone_transacao_item_despesa)
         }
 
-        viewCriada.transacao_valor.text = transacao.valor.toString()
+        val formatoBrasileiro = DecimalFormat.getCurrencyInstance(Locale("pt", "br"))
+        val moedaFormatada = formatoBrasileiro.format(transacao.valor)
+
+        viewCriada.transacao_valor.text = moedaFormatada
         viewCriada.transacao_categoria.text = transacao.categoria
         viewCriada.transacao_data.text = transacao.data.formataParaBrasileiro()
 
