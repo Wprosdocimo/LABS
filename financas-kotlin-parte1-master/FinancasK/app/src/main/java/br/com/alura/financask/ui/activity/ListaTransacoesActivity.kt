@@ -17,6 +17,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_lista_transacoes)
         val transacoes = listOf(
             Transacao(valor = BigDecimal( 20.5), tipo = Tipo.DESPESA ),
+            Transacao(valor = BigDecimal( 20.5), categoria = "Almoço de final de semana", tipo = Tipo.DESPESA ),
             Transacao(valor = BigDecimal(100.0),categoria = "Economia", tipo = Tipo.RECEITA )
         )
         val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, transacoes)

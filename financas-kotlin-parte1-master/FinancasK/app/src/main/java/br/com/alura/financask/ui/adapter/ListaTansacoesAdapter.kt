@@ -8,11 +8,10 @@ import android.widget.BaseAdapter
 import androidx.core.content.ContextCompat
 import br.com.alura.financask.R
 import br.com.alura.financask.extension.formataParaBrasileiro
+import br.com.alura.financask.extension.limitaEmAte
 import br.com.alura.financask.model.Tipo
 import br.com.alura.financask.model.Transacao
 import kotlinx.android.synthetic.main.transacao_item.view.*
-import java.text.DecimalFormat
-import java.util.*
 
 class ListaTansacoesAdapter(
     transacoes: List<Transacao>,
@@ -21,6 +20,7 @@ class ListaTansacoesAdapter(
 
     private val transacoes = transacoes
     private val context = context
+    private val limiteDaCategoria = 14
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val viewCriada = LayoutInflater.from(context)
@@ -41,11 +41,9 @@ class ListaTansacoesAdapter(
                 .setBackgroundResource(R.drawable.icone_transacao_item_despesa)
         }
 
-        val formatoBrasileiro = DecimalFormat.getCurrencyInstance(Locale("pt", "br"))
-        val moedaFormatada = formatoBrasileiro.format(transacao.valor)
 
-        viewCriada.transacao_valor.text = moedaFormatada
-        viewCriada.transacao_categoria.text = transacao.categoria
+        viewCriada.transacao_valor.text = transacao.valor.formataParaBrasileiro()
+        viewCriada.transacao_categoria.text = transacao.categoria.limitaEmAte(limiteDaCategoria)
         viewCriada.transacao_data.text = transacao.data.formataParaBrasileiro()
 
         return viewCriada
