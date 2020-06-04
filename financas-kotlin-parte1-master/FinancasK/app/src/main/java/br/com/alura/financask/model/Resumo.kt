@@ -3,11 +3,9 @@ package br.com.alura.financask.model
 import java.math.BigDecimal
 
 class Resumo(private val transacoes: List<Transacao>) {
-    fun receita() = somaPor(Tipo.RECEITA)
-
-    fun despesa() = somaPor(Tipo.DESPESA)
-
-    fun total() = receita().subtract(despesa())
+    val receita get() = somaPor(Tipo.RECEITA)
+    val despesa get() = somaPor(Tipo.DESPESA)
+    val total get() = receita.subtract(despesa)
 
     private fun somaPor(tipo: Tipo): BigDecimal {
         val soma: Double = transacoes
