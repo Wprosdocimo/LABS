@@ -34,13 +34,20 @@ class ResumoView(private val context: Context,
             text = totalDespesa.formataParaBrasileiro()
         }
     }
+
     fun adicionaTotal() {
         val total = resumo.total()
-        if (total.compareTo(BigDecimal.ZERO) >= 0) {
-            view.resumo_card_total.setTextColor(corReceita)
-        } else {
-            view.resumo_card_total.setTextColor(corDespesa)
+        val cor = corPor(total)
+        with(view.resumo_card_total){
+            setTextColor(cor)
+            text = total.formataParaBrasileiro()
         }
-        view.resumo_card_total.text = total.formataParaBrasileiro()
+    }
+
+    private fun corPor(total: BigDecimal): Int {
+        if (total >= BigDecimal.ZERO) {
+            return corReceita
+        }
+        return corDespesa
     }
 }
