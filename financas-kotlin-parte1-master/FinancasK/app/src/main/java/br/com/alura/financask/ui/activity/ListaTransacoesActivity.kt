@@ -1,10 +1,14 @@
 package br.com.alura.financask.ui.activity
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.financask.R
+import br.com.alura.financask.dao.TransacaoDAO
 import br.com.alura.financask.model.Tipo
 import br.com.alura.financask.model.Transacao
 import br.com.alura.financask.ui.ResumoView
@@ -15,7 +19,8 @@ import kotlinx.android.synthetic.main.activity_lista_transacoes.*
 
 class ListaTransacoesActivity : AppCompatActivity() {
 
-    private val transacoes: MutableList<Transacao> = mutableListOf()
+    private val dao = TransacaoDAO()
+    private val transacoes = dao.transacoes
     private val viewDaActivity: View by lazy {
         window.decorView
     }
@@ -52,7 +57,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun adiciona(transacao: Transacao) {
-        transacoes.add(transacao)
+        dao.adiciona(transacao)
         atualizaTransacoes()
     }
 
@@ -74,7 +79,25 @@ class ListaTransacoesActivity : AppCompatActivity() {
                 val transacao = transacoes[position]
                 chamaDialogDeAlteracao(transacao, position)
             }
+            setOnCreateContextMenuListener { menu, _, _ ->
+                menu.add(Menu.NONE, 1, Menu.NONE, "Remover")
+            }
         }
+    }
+
+    override fun onContextItemSelected(item: MenuItem?): Boolean {
+        val idMenu = item?.itemId
+        if (idMenu == 1){
+            val adapterMenuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
+            val posicaoDaTransacao = adapterMenuInfo.position
+            remove(posicaoDaTransacao)
+        }
+        return super.onContextItemSelected(item)
+    }
+
+    private fun remove(posicao: Int) {
+        dao.remove(posicao)
+        atualizaTransacoes()
     }
 
     private fun chamaDialogDeAlteracao(
@@ -88,7 +111,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
     }
 
     private fun altera(transacao: Transacao, position: Int) {
-        transacoes[position] = transacao
+        dao.altera(transacao, position)
         atualizaTransacoes()
     }
 }
