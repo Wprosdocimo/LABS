@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import br.com.alura.financask.R
-import br.com.alura.financask.delegate.TransacaoDelegate
 import br.com.alura.financask.model.Tipo
 import br.com.alura.financask.model.Transacao
 import br.com.alura.financask.ui.ResumoView
@@ -17,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_lista_transacoes.*
 class ListaTransacoesActivity : AppCompatActivity() {
 
     private val transacoes: MutableList<Transacao> = mutableListOf()
-    private val viewDaActivity: View  by lazy {
+    private val viewDaActivity: View by lazy {
         window.decorView
     }
     private val viewGroupDaActivity: ViewGroup by lazy {
@@ -46,12 +45,10 @@ class ListaTransacoesActivity : AppCompatActivity() {
 
     private fun chamaDiaologDeAdicao(tipo: Tipo) {
         AdicionaTransacaoDialog(viewGroupDaActivity, this)
-            .chama(tipo, object : TransacaoDelegate {
-                override fun delegate(transacao: Transacao) {
-                    adiciona(transacao)
-                    lista_transacoes_adiciona_menu.close(true)
-                }
-            })
+            .chama(tipo) {
+                adiciona(it)
+                lista_transacoes_adiciona_menu.close(true)
+            }
     }
 
     private fun adiciona(transacao: Transacao) {
@@ -71,7 +68,7 @@ class ListaTransacoesActivity : AppCompatActivity() {
 
     private fun configuraLista() {
         val listaTansacoesAdapter = ListaTansacoesAdapter(transacoes, this)
-        with(lista_transacoes_listview){
+        with(lista_transacoes_listview) {
             adapter = listaTansacoesAdapter
             setOnItemClickListener { _, _, position, _ ->
                 val transacao = transacoes[position]
@@ -85,12 +82,9 @@ class ListaTransacoesActivity : AppCompatActivity() {
         position: Int
     ) {
         AlteraTransacaoDialog(viewGroupDaActivity, this)
-            .chama(transacao, object : TransacaoDelegate {
-                override fun delegate(transacao: Transacao) {
-                    altera(transacao, position)
-                }
-
-            })
+            .chama(transacao) {
+                altera(it, position)
+            }
     }
 
     private fun altera(transacao: Transacao, position: Int) {
