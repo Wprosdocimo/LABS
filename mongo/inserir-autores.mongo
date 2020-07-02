@@ -1,0 +1,28 @@
+db.autores.insertMany([
+    {   
+        nome: "Yuri Matheus",
+        descricao: "Instrutor na Alura",
+        email: "yuri@alura.com.br",
+        senha: "senha"
+    },
+    {
+        nome: "Felipe Nascimento",
+        descricao: "Escritor do blog da Alura",
+        email: "felipe@alura.com.br",
+        senha: "senha"
+    }
+])
+
+
+db.autores.insertOne({
+
+    nome: "Gabriel Ferreira",
+
+    descricao: "Desenvolvedor, instrutor e criador de conteúdo na Alura e grupo Caelum.",
+
+    email: "gabs@caelum.com.br",
+
+    senha: "gabs1234"
+
+})
+
