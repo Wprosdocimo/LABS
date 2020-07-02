@@ -22,9 +22,6 @@ private const val MENSAGEM_FALHA_CARREGAR_NOTICIAS = "Não foi possível carrega
 
 class ListaNoticiasActivity : AppCompatActivity() {
 
-    //    private val repository by lazy {
-//        NoticiaRepository(AppDatabase.getInstance(this).noticiaDAO)
-//    }
     private val adapter by lazy {
         ListaNoticiasAdapter(context = this)
     }
@@ -63,9 +60,7 @@ class ListaNoticiasActivity : AppCompatActivity() {
 
     private fun buscaNoticias() {
         viewModel.buscaTodos().observe(this, Observer { resource ->
-            resource.dado?.let {
-                adapter.atualiza(it)
-            }
+            resource.dado?.let { adapter.atualiza(it) }
             resource.erro?.let {
                 mostraErro(MENSAGEM_FALHA_CARREGAR_NOTICIAS)
             }
