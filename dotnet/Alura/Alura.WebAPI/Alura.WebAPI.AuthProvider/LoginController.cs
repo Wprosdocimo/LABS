@@ -8,6 +8,7 @@ using Alura.ListaLeitura.Seguranca;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SigningCredentials = Microsoft.IdentityModel.Tokens.SigningCredentials;
 
 namespace Alura.ListaLeitura.Services
 {

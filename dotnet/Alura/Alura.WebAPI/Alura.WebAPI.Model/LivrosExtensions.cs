@@ -60,7 +60,7 @@ namespace Alura.ListaLeitura.Modelos
             };
         }
 
-        public static LivroUpload toUpload(this LivroApi livro)
+        public static LivroUpload ToUpload(this LivroApi livro)
         {
             return new LivroUpload
             {

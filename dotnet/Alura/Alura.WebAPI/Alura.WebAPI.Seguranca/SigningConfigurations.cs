@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Alura.ListaLeitura.Seguranca
 {
@@ -7,13 +8,15 @@ namespace Alura.ListaLeitura.Seguranca
         private readonly string secret = "mysupersecret_secretkey!123";
         public SecurityKey Key { get; }
         public SigningCredentials SigningCredentials { get; }
-        public object SecurityAlgorithms { get; }
 
         public SigningConfigurations()
         {
             var keyByteArray = Encoding.ASCII.GetBytes(secret);
             Key = new SymmetricSecurityKey(keyByteArray);
-            SigningCredentials = new SigningCredentials(Key, SecurityAlgorithms.HmacSha256);
+            SigningCredentials = new SigningCredentials(
+                Key,
+                SecurityAlgorithms.HmacSha256
+            );
         }
     }
 }

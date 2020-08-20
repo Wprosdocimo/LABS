@@ -1,9 +1,9 @@
 ﻿using Alura.ListaLeitura.Modelos;
 using Alura.ListaLeitura.WebApp.Models;
+using Alura.ListaLeitura.HttpClients;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Alura.ListaLeitura.HttpClients;
 using System.Threading.Tasks;
 
 namespace Alura.ListaLeitura.WebApp.Controllers
@@ -20,8 +20,8 @@ namespace Alura.ListaLeitura.WebApp.Controllers
 
         private async Task<IEnumerable<LivroApi>> ListaDoTipo(TipoListaLeitura tipo)
         {
-            var livros = await _api.GetListaLeituraAsync(tipo);
-            return livros.Livros;
+            var lista = await _api.GetListaLeituraAsync(tipo);
+            return lista.Livros;
         }
 
         public async Task<IActionResult> Index()

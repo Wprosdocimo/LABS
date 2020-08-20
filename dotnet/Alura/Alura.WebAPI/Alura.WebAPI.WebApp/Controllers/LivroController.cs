@@ -53,7 +53,7 @@ namespace Alura.ListaLeitura.WebApp.Controllers
             {
                 return NotFound();
             }
-            return View(model.toUpload());
+            return View(model.ToUpload());
         }
 
         [HttpPost]

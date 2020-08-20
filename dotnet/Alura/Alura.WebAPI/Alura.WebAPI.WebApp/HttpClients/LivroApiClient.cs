@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Alura.ListaLeitura.Modelos;
+using Lista = Alura.ListaLeitura.Modelos.ListaLeitura;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Alura.ListaLeitura.Modelos;
-using Lista = Alura.ListaLeitura.Modelos.ListaLeitura;
+using System.Net.Http.Headers;
 
 namespace Alura.ListaLeitura.HttpClients
 {
@@ -12,99 +11,105 @@ namespace Alura.ListaLeitura.HttpClients
     {
         private readonly HttpClient _httpClient;
 
-        public LivroApiClient(HttpClient httpClient)
+        public LivroApiClient(HttpClient client)
         {
-            _httpClient = httpClient;
+            _httpClient = client;
         }
 
-        public async Task<Lista> GetListaLeituraAsync(TipoListaLeitura tipo)
+        public async Task<byte[]> GetCapaLivroAsync(int id)
         {
-            var resposta = await _httpClient.GetAsync($"listaslitura/{tipo}");
+            var resposta = await _httpClient.GetAsync($"livros/{id}/capa");
             resposta.EnsureSuccessStatusCode();
-            return await resposta.Content.ReadAsAsync<Lista>();
+            return await resposta.Content.ReadAsByteArrayAsync();
+        }
+
+        public async Task<LivroApi> GetLivroAsync(int id)
+        {
+            var resposta = await _httpClient.GetAsync($"livros/{id}");
+            resposta.EnsureSuccessStatusCode();
+            return await resposta.Content.ReadAsAsync<LivroApi>();
         }
 
         public async Task DeleteLivroAsync(int id)
         {
             var resposta = await _httpClient.DeleteAsync($"livros/{id}");
             resposta.EnsureSuccessStatusCode();
+            if (resposta.StatusCode != System.Net.HttpStatusCode.NoContent)
+            {
+                throw new InvalidOperationException("Código de Status Http 204 esperado!");
+            }
         }
 
-
-        public async Task<byte[]> GetCapaLivroAsync(int id)
+        public async Task PostLivroAsync(LivroUpload livro)
         {
-            HttpResponseMessage resposta = await _httpClient.GetAsync($"livros/{id}/capa");
+            HttpContent content = CreateMultipartContent(livro.ToLivro());
+            var resposta = await _httpClient.PostAsync("livros", content);
             resposta.EnsureSuccessStatusCode();
-
-            return await resposta.Content.ReadAsByteArrayAsync();
+            if (resposta.StatusCode != System.Net.HttpStatusCode.Created)
+            {
+                throw new InvalidOperationException("Código de Status Http 201 esperado!");
+            }
         }
 
-        public async Task<LivroApi> GetLivroAsync(int id)
+        public async Task PutLivroAsync(LivroUpload livro)
         {
-            HttpResponseMessage resposta = await _httpClient.GetAsync($"livros/{id}");
+            HttpContent content = CreateMultipartContent(livro.ToLivro());
+            var resposta = await _httpClient.PutAsync("livros", content);
             resposta.EnsureSuccessStatusCode();
+            if (resposta.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                throw new InvalidOperationException("Código de Status Http 200 esperado!");
+            }
 
-            return await resposta.Content.ReadAsAsync<LivroApi>();
         }
 
         private string EnvolveComAspasDuplas(string valor)
         {
-            return $"\"{valor}\"";
+            return $"\u0022{valor}\u0022";
         }
 
-        private HttpContent CreateMultipartFormDataContent(LivroUpload model)
+        private HttpContent CreateMultipartContent(Livro livro)
         {
             var content = new MultipartFormDataContent();
 
-            content.Add(new StringContent(model.Titulo), EnvolveComAspasDuplas("titulo"));
-            content.Add(new StringContent(model.Lista.ParaString()), EnvolveComAspasDuplas("lista"));
+            content.Add(new StringContent(livro.Titulo), EnvolveComAspasDuplas("titulo"));
+            content.Add(new StringContent(livro.Lista.ParaString()), EnvolveComAspasDuplas("lista"));
 
-            if (!string.IsNullOrEmpty(model.Subtitulo))
+            if (livro.Id > 0)
             {
-                content.Add(new StringContent(model.Subtitulo), EnvolveComAspasDuplas("subtitulo"));
-            }
-            if (!string.IsNullOrEmpty(model.Resumo))
-            {
-                content.Add(new StringContent(model.Resumo), EnvolveComAspasDuplas("resumo"));
-            }
-            if (!string.IsNullOrEmpty(model.Autor))
-            {
-                content.Add(new StringContent(model.Autor), EnvolveComAspasDuplas("autor"));
+                content.Add(new StringContent(Convert.ToString(livro.Id)), EnvolveComAspasDuplas("id"));
             }
 
-            if (model.Id > 0)
+            if (!string.IsNullOrEmpty(livro.Subtitulo))
             {
-                content.Add(new StringContent(model.Id.ToString()), EnvolveComAspasDuplas("id"));
+                content.Add(new StringContent(livro.Subtitulo), EnvolveComAspasDuplas("subtitulo"));
             }
 
-            if (model.Capa != null)
+            if (!string.IsNullOrEmpty(livro.Resumo))
             {
-                var imagemContent = new ByteArrayContent(model.Capa.ConvertToBytes());
-                imagemContent.Headers.Add("content-type", "image/png");
-                content.Add(
-                    imagemContent,
-                    EnvolveComAspasDuplas("capa"),
-                    EnvolveComAspasDuplas("capa.png")
-                    );
+                content.Add(new StringContent(livro.Resumo), EnvolveComAspasDuplas("resumo"));
+            }
+
+            if (!string.IsNullOrEmpty(livro.Autor))
+            {
+                content.Add(new StringContent(livro.Autor), EnvolveComAspasDuplas("autor"));
+            }
+
+            if (livro.ImagemCapa != null)
+            {
+                var imageContent = new ByteArrayContent(livro.ImagemCapa);
+                imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/png");
+                content.Add(imageContent, EnvolveComAspasDuplas("capa"), EnvolveComAspasDuplas("capa.png"));
             }
 
             return content;
         }
 
-        public async Task PostLivroAsync(LivroUpload model)
+        public async Task<Lista> GetListaLeituraAsync(TipoListaLeitura tipo)
         {
-            HttpContent content = CreateMultipartFormDataContent(model);
-            var resposta = await _httpClient.PostAsync("livros", content);
+            var resposta = await _httpClient.GetAsync($"listasleitura/{tipo}");
             resposta.EnsureSuccessStatusCode();
+            return await resposta.Content.ReadAsAsync<Lista>();
         }
-
-        public async Task PutLivroAsync(LivroUpload model)
-        {
-            HttpContent content = CreateMultipartFormDataContent(model);
-            var resposta = await _httpClient.PostAsync("livros", content);
-            resposta.EnsureSuccessStatusCode();
-        }
-
-
     }
 }
