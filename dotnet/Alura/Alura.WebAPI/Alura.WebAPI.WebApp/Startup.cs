@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Alura.WebAPI.WebApp.Formatters;
 using System;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Alura.ListaLeitura.WebApp
 {
@@ -26,20 +27,32 @@ namespace Alura.ListaLeitura.WebApp
                 options.UseSqlServer(Configuration.GetConnectionString("AuthDB"));
             });
 
-            services.AddIdentity<Usuario, IdentityRole>(options =>
-            {
-                options.Password.RequiredLength = 3;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-            }).AddEntityFrameworkStores<AuthDbContext>();
+            //services.AddIdentity<Usuario, IdentityRole>(options =>
+            //{
+            //    options.Password.RequiredLength = 3;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.RequireUppercase = false;
+            //    options.Password.RequireLowercase = false;
+            //}).AddEntityFrameworkStores<AuthDbContext>();
+            services.AddHttpContextAccessor();
 
-            services.ConfigureApplicationCookie(options => {
-                options.LoginPath = "/Usuario/Login";
-            });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Usuario/Login";
+                });
+
+            //services.ConfigureApplicationCookie(options => {
+            //    options.LoginPath = "/Usuario/Login";
+            //});
 
             services.AddHttpClient<LivroApiClient>(client => {
                 client.BaseAddress = new Uri("http://localhost:6000/api/");
+            });
+
+            services.AddHttpClient<AuthApiClient>(client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:5000/api/");
             });
 
             services.AddMvc(options => {
