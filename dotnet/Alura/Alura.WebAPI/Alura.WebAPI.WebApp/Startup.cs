@@ -1,9 +1,6 @@
-﻿using Alura.ListaLeitura.Seguranca;
-using Alura.ListaLeitura.HttpClients;
+﻿using Alura.ListaLeitura.HttpClients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Alura.WebAPI.WebApp.Formatters;
@@ -23,17 +20,6 @@ namespace Alura.ListaLeitura.WebApp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AuthDbContext>(options => {
-                options.UseSqlServer(Configuration.GetConnectionString("AuthDB"));
-            });
-
-            //services.AddIdentity<Usuario, IdentityRole>(options =>
-            //{
-            //    options.Password.RequiredLength = 3;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireLowercase = false;
-            //}).AddEntityFrameworkStores<AuthDbContext>();
             services.AddHttpContextAccessor();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -41,10 +27,6 @@ namespace Alura.ListaLeitura.WebApp
                 {
                     options.LoginPath = "/Usuario/Login";
                 });
-
-            //services.ConfigureApplicationCookie(options => {
-            //    options.LoginPath = "/Usuario/Login";
-            //});
 
             services.AddHttpClient<LivroApiClient>(client => {
                 client.BaseAddress = new Uri("http://localhost:6000/api/");
