@@ -1,0 +1,67 @@
+﻿@model ByteBank.Forum.ViewModels.ContaMinhaContaViewModel
+
+@{
+    ViewBag.Title = "MinhaConta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Minha conta</h2>
+
+
+@using (Html.BeginForm("EsquecerNavegador", "Conta", FormMethod.Post, new { id = "formulario_esquecer_navegador" }))
+{
+
+}
+
+@using (Html.BeginForm("DeslogarDeTodosOsLocais", "Conta", FormMethod.Post, new { id = "formulario_deslogar_de_todos_os_locais" }))
+{
+
+}
+
+@using (Html.BeginForm())
+{
+
+    @Html.ValidationSummary()
+
+    @Html.LabelFor(modelo => modelo.NomeCompleto);
+    <br />
+    @Html.EditorFor(modelo => modelo.NomeCompleto)
+    <br />
+
+    @Html.LabelFor(modelo => modelo.NumeroDeCelular);
+    <br />
+    @Html.EditorFor(modelo => modelo.NumeroDeCelular)
+    <br />
+
+    if (Model.NumeroDeCelularConfirmado)
+    {
+        @Html.LabelFor(modelo => modelo.HabilitarAutenticacaoDeDoisFatores);
+        <br />
+        @Html.EditorFor(modelo => modelo.HabilitarAutenticacaoDeDoisFatores)
+        <br />
+
+        <a href="javascript:document.getElementById('formulario_esquecer_navegador').submit()">
+            Esquecer este navegador
+        </a>
+
+    }
+    else
+    {
+        <p>
+            * Informe e confirme seu número de celular para habilitar
+            a autenticação com 2 fatores!
+        </p>
+
+        @Html.ActionLink("Clique aqui para verificar o token recebido!", "VerificacaoCodigoCelular")
+    }
+
+    <br />
+
+    <a href="javascript:document.getElementById('formulario_deslogar_de_todos_os_locais').submit()">
+        Deslogar de todos os locais!
+    </a>
+
+    <br />
+
+    <input type="submit" value="Salvar" class="btn btn-default" />
+}
