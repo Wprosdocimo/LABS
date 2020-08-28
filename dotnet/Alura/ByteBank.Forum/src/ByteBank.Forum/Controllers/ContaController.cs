@@ -205,6 +205,10 @@ namespace ByteBank.Forum.Controllers
                         }
 
                         return RedirectToAction("Index", "Home");
+
+                    case SignInStatus.RequiresVerification:
+                        return RedirectToAction("VerificacaoDoisFatores");
+
                     case SignInStatus.LockedOut:
                         var senhaCorreta = 
                             await UserManager.CheckPasswordAsync(
@@ -223,6 +227,32 @@ namespace ByteBank.Forum.Controllers
 
             // Algo de errado aconteceu
             return View(modelo);
+        }
+
+        public async Task<ActionResult> VerificacaoDoisFatores()
+        {
+            var resultado = await SignInManager.SendTwoFactorCodeAsync("SMS");
+
+            if (resultado)
+                return View();
+
+            return View("Error");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> VerificacaoDoisFatores(string token)
+        {
+            var resultado =  
+                await SignInManager.TwoFactorSignInAsync(
+                    "SMS",
+                    token,
+                    isPersistent: false,
+                    rememberBrowser: false);
+
+            if (resultado == SignInStatus.Success)
+                return RedirectToAction("Index", "Home");
+
+            return View("Error");
         }
 
         [HttpPost]
@@ -354,6 +384,63 @@ namespace ByteBank.Forum.Controllers
         [HttpPost]
         public async Task<ActionResult> MinhaConta(ContaMinhaContaViewModel modelo)
         {
+            if (ModelState.IsValid)
+            {
+                var usuarioId = HttpContext.User.Identity.GetUserId();
+                var usuario = await UserManager.FindByIdAsync(usuarioId);
+
+                usuario.NomeCompleto = modelo.NomeCompleto;
+                usuario.PhoneNumber = modelo.NumeroDeCelular;
+
+                if (!usuario.PhoneNumberConfirmed)
+                    await EnviarSmsDeConfirmacaoAsync(usuario);
+                else
+                    usuario.TwoFactorEnabled = modelo.HabilitarAutenticacaoDeDoisFatores;
+
+                var resultadoUpdate = await UserManager.UpdateAsync(usuario);
+
+                if (resultadoUpdate.Succeeded)
+                    return RedirectToAction("Index", "Home");
+
+                AdicionaErros(resultadoUpdate);
+            }
+            return View();
+        }
+
+        private async Task EnviarSmsDeConfirmacaoAsync(UsuarioAplicacao usuario)
+        {
+            var tokenDeConfirmacao = 
+                await UserManager.GenerateChangePhoneNumberTokenAsync(
+                    usuario.Id,
+                    usuario.PhoneNumber
+                );
+
+            await UserManager.SendSmsAsync(
+                usuario.Id,
+                $"Token de confirmacao: {tokenDeConfirmacao}");
+        }
+
+        public ActionResult VerificacaoCodigoCelular()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> VerificacaoCodigoCelular(string token)
+        {
+            var usuarioId = HttpContext.User.Identity.GetUserId();
+            var usuario = await UserManager.FindByIdAsync(usuarioId);
+
+            var resultado = 
+                await UserManager.ChangePhoneNumberAsync(
+                    usuarioId,
+                    usuario.PhoneNumber,
+                    token);
+
+            if (resultado.Succeeded)
+                return RedirectToAction("Index", "Home");
+
+            AdicionaErros(resultado);
             return View();
         }
 
