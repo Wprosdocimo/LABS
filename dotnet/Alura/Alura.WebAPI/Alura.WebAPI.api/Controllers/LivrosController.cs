@@ -12,7 +12,8 @@ namespace Alura.ListaLeitura.Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class LivrosController : ControllerBase
     {
         private readonly IRepository<Livro> _repo;
@@ -23,6 +24,7 @@ namespace Alura.ListaLeitura.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(statusCode: 200, Type = typeof(List<LivroApi>))]
         public IActionResult ListaDeLivros()
         {
             var lista = _repo.All.Select(l => l.ToApi()).ToList();
