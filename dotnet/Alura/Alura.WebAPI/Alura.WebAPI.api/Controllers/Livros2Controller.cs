@@ -53,10 +53,10 @@ namespace Alura.ListaLeitura.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Produces("application/json", "application/xml")]
         [SwaggerOperation(
             Summary = "Recupera o livro identificado por seu {id}.",
-            Tags = new[] { "Livros" },
-            Produces = new[] {"application/json", "application/xml"}
+            Tags = new[] { "Livros" }
         )]
         [ProducesResponseType(statusCode: 200, Type = typeof(LivroApi))]
         [ProducesResponseType(statusCode: 500, Type = typeof(ErroResponse))]
@@ -74,9 +74,9 @@ namespace Alura.ListaLeitura.Api.Controllers
 
         [SwaggerOperation(
             Summary = "Recupera a capa do livro identificado por seu {id}.",
-            Tags = new [] {"Livros"},
-            Produces = new [] {"image/png"}
+            Tags = new [] {"Livros"}
         )]
+        [Produces("image/png")]
         [HttpGet("{id}/capa")]
         public IActionResult ImagemCapa(
                 [SwaggerParameter("Id do livro.", Required = true)] int id)

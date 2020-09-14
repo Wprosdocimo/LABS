@@ -1,4 +1,5 @@
-﻿using Swashbuckle.AspNetCore.Swagger;
+﻿using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ namespace Alura.WebAPI.Api.Filtros
 {
     public class TagDescriptionsDocumentFilter : IDocumentFilter
     {
-        public void Apply(SwaggerDocument swaggerDoc, DocumentFilterContext context)
+        public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
         {
             swaggerDoc.Tags = new[] {
-            new Tag { Name = "Livros", Description = "Consulta e mantém os livros." },
-            new Tag { Name = "Listas", Description = "Consulta as listas de leitura." }
+            new OpenApiTag { Name = "Livros", Description = "Consulta e mantém os livros." },
+            new OpenApiTag { Name = "Listas", Description = "Consulta as listas de leitura." }
         };
         }
     }

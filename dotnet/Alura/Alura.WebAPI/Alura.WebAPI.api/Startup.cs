@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -60,30 +61,42 @@ namespace Alura.WebAPI.Api
                     return versions.Any(v => $"v{v.ToString()}" == docName);
                 });
 
-                options.AddSecurityDefinition("Bearer", new ApiKeyScheme {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
                     Name = "Authorization",
-                    In = "header",
-                    Type = "apiKey",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
                     Description = "Autenticação Bearer via JWT"
                 });
-                options.AddSecurityRequirement(
-                    new Dictionary<string, IEnumerable<string>> {
-                        { "Bearer", new string[] { } }
+
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer", new string[] { }},
+                };
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
                 });
 
                 options.EnableAnnotations();
-
-                options.DescribeAllEnumsAsStrings();
-                options.DescribeStringEnumsInCamelCase();
 
                 options.DocumentFilter<TagDescriptionsDocumentFilter>();
                 options.OperationFilter<AuthResponsesOperationFilter>();
                 options.OperationFilter<AddInfoToParamVersionOperationFilter>();
 
-                options.SwaggerDoc("v1.0", new Info { Title = "Lista de Leitura API - v1.0", Version = "1.0" });
+                options.SwaggerDoc("v1.0", new OpenApiInfo { Title = "Lista de Leitura API - v1.0", Version = "1.0" });
                 options.SwaggerDoc(
                     "v2.0", 
-                    new Info {
+                    new OpenApiInfo
+                    {
                         Title = "Lista de Leitura API",
                         Description = "API com serviços relacionados às listas de leitura, produzidas para a Alura.",
                         Version = "2.0"

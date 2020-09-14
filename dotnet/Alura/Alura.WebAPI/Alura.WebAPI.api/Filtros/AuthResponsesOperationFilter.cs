@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
@@ -10,7 +11,7 @@ namespace Alura.WebAPI.Api.Filtros
 {
     public class AuthResponsesOperationFilter : IOperationFilter
     {
-        public void Apply(Operation operation, OperationFilterContext context)
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             var authAttributes = context.MethodInfo
                 .DeclaringType
@@ -21,7 +22,7 @@ namespace Alura.WebAPI.Api.Filtros
             if (authAttributes.Any())
                 operation.Responses.Add(
                     "401", 
-                    new Response { Description = "Unauthorized" });
+                    new OpenApiResponse { Description = "Unauthorized" });
         }
     }
 }
