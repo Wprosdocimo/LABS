@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace ExemplosMongoDB
 {
@@ -6,7 +7,9 @@ namespace ExemplosMongoDB
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Task T = manipulandoClassesExternas.MainASync(args);
+            Console.WriteLine("Precione ENTER");
+            Console.ReadLine();
         }
     }
 }
