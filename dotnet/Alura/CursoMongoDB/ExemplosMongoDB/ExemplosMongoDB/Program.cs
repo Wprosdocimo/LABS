@@ -7,7 +7,7 @@ namespace ExemplosMongoDB
     {
         static void Main(string[] args)
         {
-            Task T = incluindoMuitosLivros.MainASync(args);
+            Task T = listandoDocumentos.MainASync(args);
             Console.WriteLine("Precione ENTER");
             Console.ReadLine();
         }
